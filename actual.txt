@@ -1,0 +1,6 @@
+OK line=1 sensor=1 temp=25C humidity=60%
+OK line=2 sensor=2 temp=-5C humidity=50%
+ERROR line=3 reason=checksum
+ERROR line=4 reason=humidity-range
+ERROR line=5 reason=malformed-frame
+Summary: valid=2 rejected=3
