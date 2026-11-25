@@ -16,10 +16,8 @@ Each line of input contains five hexadecimal bytes:
 
 ## 1. Install compiler and debugger (Ubuntu/Debian)
 
-```bash
 sudo apt update
-sudo apt install build-essential gdb
-```
+sudo apt install build-essential gdb python3 git
 
 ## 2. Compile and test on Linux
 
@@ -79,6 +77,70 @@ For extra practice, manually remove the `INTRODUCE_BUG` branch and use the fixed
 - `-O0`: avoid optimization so variables and control flow are easier to inspect.
 - `-Wall -Wextra -Wpedantic -Werror`: surface and enforce compile-time warnings.
 - `-std=c11`: compile as C11.
+
+## 7. Software Validation Results
+
+The application was compiled and tested in Ubuntu using Windows Subsystem for Linux (WSL) and Visual Studio Code.
+
+### Development Environment
+
+| Tool | Version |
+|---|---|
+| GCC | 15.2.0 |
+| GNU Make | 4.4.1 |
+| GDB | 17.1 |
+| Python | 3.14.4 |
+| Git | 2.53.0 |
+
+### Automated Regression Testing
+
+All 19 automated regression tests passed successfully.
+
+| Test Category | Passed |
+|---|---:|
+| Valid readings and boundary conditions | 5/5 |
+| Out-of-range measurements | 3/3 |
+| Protocol validation | 3/3 |
+| Malformed packet detection | 4/4 |
+| Comments and blank lines | 1/1 |
+| Command-line error handling | 2/2 |
+| Intentional bug reproduction | 1/1 |
+| Total | 19/19 |
+
+![Regression Test Results](images/regression_test_results.png)
+
+### Intentional Bug Reproduction
+
+The intentionally buggy executable incorrectly interprets the hexadecimal temperature byte 0xFB as 251°C instead of -5°C.
+
+![Bug Reproduction](images/bug_reproduction_results.png)
+
+### GDB Root Cause Analysis
+
+A conditional breakpoint was used to isolate the negative-temperature packet and inspect the signedness conversion.
+
+| Debugging Parameter | Observed Value |
+|---|---|
+| Raw hexadecimal byte | 0xFB |
+| Incorrect unsigned interpretation | 251 |
+| Correct signed interpretation | -5 |
+| Root cause | Incorrect signedness conversion |
+
+![GDB Debugging Results](images/gdb_debugging_results.png)
+
+### Corrected Implementation
+
+The corrected implementation converts the raw temperature byte through int8_t before converting it to an integer.
+
+![Corrected Program Results](images/corrected_program_results.png)
+
+### Technical Documentation
+
+- [Sensor communication protocol](docs/protocol.md)
+- [GDB debugging and root cause analysis](docs/debugging.md)
+- [Software validation results](docs/validation.md)
+
+The project demonstrates simulated sensor packet processing, software debugging, error detection and automated regression testing. Physical UART communication and comprehensive fuzz testing are outside the scope of this implementation.
 
 ## What you can accurately claim
 
