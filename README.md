@@ -15,9 +15,10 @@ Each line of input contains five hexadecimal bytes:
 - Invalid start byte, checksum, sensor ID, temperature, humidity, and malformed lines are rejected.
 
 ## 1. Install compiler and debugger (Ubuntu/Debian)
-
+```bash
 sudo apt update
 sudo apt install build-essential gdb python3 git
+```
 
 ## 2. Compile and test on Linux
 
