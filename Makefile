@@ -1,5 +1,6 @@
 CC := gcc
 CFLAGS := -std=c11 -O0 -g3 -Wall -Wextra -Wpedantic -Werror
+PYTHON := python3
 SOURCE := src/sensor_monitor.c
 
 .PHONY: all buggy test clean
@@ -11,13 +12,16 @@ build:
 build/sensor_monitor: $(SOURCE) | build
 	$(CC) $(CFLAGS) $(SOURCE) -o $@
 
-buggy: | build
-	$(CC) $(CFLAGS) -DINTRODUCE_BUG $(SOURCE) -o build/sensor_monitor_buggy
+build/sensor_monitor_buggy: $(SOURCE) | build
+	$(CC) $(CFLAGS) -DINTRODUCE_BUG $(SOURCE) -o $@
 
-test: all
+buggy: build/sensor_monitor_buggy
+
+test: all buggy
 	./build/sensor_monitor samples/frames.txt > build/actual.txt
 	diff -u samples/expected.txt build/actual.txt
 	@echo "PASS: sample-frame validation"
+	$(PYTHON) tests/test_sensor_monitor.py
 
 clean:
 	rm -rf build

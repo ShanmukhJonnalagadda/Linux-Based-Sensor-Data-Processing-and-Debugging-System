@@ -1,0 +1,7 @@
+build/
+/sensor_monitor
+/sensor_monitor_buggy
+/actual.txt
+*.o
+*.exe
+__pycache__/
