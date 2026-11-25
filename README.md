@@ -70,7 +70,6 @@ The source has a compile-time switch to show the difference:
 
 `make` produces the fixed build. Run `make test` to confirm valid negative temperatures are decoded correctly.
 
-For extra practice, manually remove the `INTRODUCE_BUG` branch and use the fixed conversion in both builds. Add a sixth input row with an invalid start byte and update `samples/expected.txt`.
 
 ## 6. Useful GCC flags
 
